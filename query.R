@@ -3,16 +3,15 @@ library(googleAuthR)
 library(openxlsx)
 library(dplyr)
 source("R/functions/api_data.R")
-source("R/functions/gtm_api.R")
-source("R/functions/var_types_table.R")
+source("R/functions/gtm_functions.R")
+
+# Authenticate API --------------------------------------------------------
+googleAuthR::gar_auth()
 
 # Basic input for project -------------------------------------------------
 projectName <- 'INSERT_PROJECT_OR_COMPANYNAME'
 Sys.Date() -> date
 xlsXFileName <- paste0(projectName, '_gtmDocumentation_',date,'.xlsx')
-
-# Authenticate API --------------------------------------------------------
-googleAuthR::gar_auth()
 
 # Choose account_id -------------------------------------------------------
 account_id <- "INSERT_GTM_ACCOUNT_ID"
@@ -22,7 +21,7 @@ gtm_container_list(account_id) -> container_list
 gtm_account_list() -> account_list
 
 # Choose container from container_list ------------------------------------
-container_id <- "INSERT_CONTAINER_NAME"
+container_id <- "INSERT_CONTAINER_ID"
 container_name <- container_list$container.name
 
 # Get Environment list ----------------------------------------------------
@@ -47,6 +46,10 @@ variable_list$variable.parameter <- NULL
 colnames(variable_list)[10] <- "folderId"
 
 transform(variable_list, description=do.call(rbind, strsplit(variable.notes, 'EXAMPLE:', fixed=TRUE)), stringsAsFactors=F) -> variable_list
+
+variable.type <- c("k","v","u","jsm","gas","remm","j","c","aev","smm","ctv","dbg","d","f","r")
+variable_type <- c("1st-Party Cookie", "Data Layer Variable", "URL", "Custom JavaScript", "	Google Analytics settings", "RegEx Table","Javascript Variable","Constant","Auto-Event Variable","Lookup Table","Container Version Number","Debug Mode","DOM Element","HTTP Referrer","Random Number")
+var_trans <- data.frame(variable.type,variable_type)
 
 transform(variable_list, type=do.call(rbind, strsplit(description.2, 'TYPE:', fixed=TRUE)), stringsAsFactors=F) -> variable_list
 left_join(variable_list, var_trans, by = "variable.type") -> variable_list # get the GTM variable full names list
