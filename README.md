@@ -27,3 +27,6 @@ You need to use collect these credentials and add them to the "api_data" file in
 ### Get your GTM container ID and GTM account ID
 
 Once you have access to GTM via your R script, please provide a valid Google Tag Manager account ID and container ID for the GTM container you would like to run the script for. You can find these values in your Google Tag Manager UI in the admin section.
+
+### Split your notes
+With each item in GTM (variable, trigger, tag), you can add a note. This script pulls the information from the note for each corresponding item and splits the texts to separate columns based on an identifier. It is possible to setup these identifiers to provide more detailed documentation for each of the items in the documentation.
