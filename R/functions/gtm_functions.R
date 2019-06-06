@@ -1,15 +1,13 @@
 gtm_account_list <- function(){
   acc_url <- "https://www.googleapis.com/tagmanager/v2/accounts"
-  f_acc <- gar_api_generator(acc_url,
-                             "GET")
+  f_acc <- gar_api_generator(acc_url, "GET")
   a <- f_acc()
   as.data.frame(a$content)
 }
 
 gtm_container_list <- function(account_id){
   acc_url <- "https://www.googleapis.com/tagmanager/v2/accounts"
-  f_con <- gar_api_generator(paste(acc_url, "/",account_id,"/containers", sep = ""),
-                             "GET")
+  f_con <- gar_api_generator(paste(acc_url, "/",account_id,"/containers", sep = ""), "GET")
   c<- f_con()
   as.data.frame(c$content)
 }
@@ -30,7 +28,6 @@ gtm_workspace_list <- function(account_id, container_id) {
   as.data.frame(env$content)
 }
 
-
 gtm_container_version <- function(account_id, container_id){
   gtm_environment_list(account_id, container_id) -> ge
   max(as.numeric(ge$environment.containerVersionId), na.rm = TRUE)
@@ -38,7 +35,7 @@ gtm_container_version <- function(account_id, container_id){
 
 gtm_workspace_id <- function(account_id, container_id){
   gtm_workspace_list(account_id, container_id) -> ge
-  max(as.numeric(ge$workspace.workspaceId), na.rm = TRUE)
+  max(as.numeric(ge$workspace.workspaceId), na.rm = TRUE) #do we need a better way to find the correct workspace ID?
 }
 
 gtm_builtin_list <- function(account_id,container_id){
@@ -64,7 +61,7 @@ gtm_var_list <- function(account_id, container_id){
   gtm_workspace_id(account_id, container_id) -> ws
   cont_url <- paste("https://www.googleapis.com/tagmanager/v2/accounts/",account_id,"/containers", sep = "")
   var_url <- paste(cont_url,"/",container_id, "/workspaces/",  ws, "/variables", sep = "")
-  f_var <- gar_api_generator(var_url,  "GET")
+  f_var <- gar_api_generator(var_url, "GET")
   v_l <- f_var()
   as.data.frame(v_l$content) -> v_l
   v_l[,c("variable.variableId", "variable.name", "variable.type", "variable.notes", "variable.parentFolderId")]
