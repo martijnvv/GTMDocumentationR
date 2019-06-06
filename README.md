@@ -12,7 +12,6 @@ It provides a format of the defined variables in GTM, including some additional 
 The packages I have used are:
 * googleAuthR
 * openxlsx
-* dplyr
 
 ## Options to configure before running the script
 
