@@ -24,7 +24,6 @@ container_id <- "INSERT_CONTAINER_ID"
 
 # Get workspace and environment data ----------------------------------------------------
 gtm_environment_list(account_id, container_id) -> environment_list
-gtm_workspace_list(account_id, container_id) -> workspace_list
 gtm_workspace_id(account_id, container_id) -> workspace_id
 
 # Get Builtin Variable list ----------------------------------------------------
@@ -32,12 +31,9 @@ gtm_builtin_list(account_id, container_id) -> builtinvar_list
 
 # tag list ----------------------------------------------------------------
 gtm_tag_list(account_id, container_id) -> tag_list
-colnames(tag_list)[c(4,5)] <- c("folderId", "tag.enabled")
-tag_list$tag.enabled[is.na(tag_list$tag.enabled)] <- FALSE
 
 # variable list -----------------------------------------------------------
 gtm_var_list(account_id, container_id) -> variable_list
-colnames(variable_list)[5] <- "folderId"
 
 # optional to split the notes column in multiple columns
 transform(variable_list, description=do.call(rbind, strsplit(variable.notes, 'EXAMPLE:', fixed=TRUE)), stringsAsFactors=F) -> variable_list
@@ -55,14 +51,12 @@ merge(variable_list, var_trans, by = "variable.type", all.x = TRUE) -> variable_
 
 # trigger list -------------------------------------------------------
 gtm_trigger_list(account_id, container_id) -> trigger_list
-colnames(trigger_list)[4] <- "folderId"
 
 # Permissions list --------------------------------------------------------
 gtm_user_list(account_id) -> permissions_list
 
 # Folders list ------------------------------------------------------------
 gtm_folder_list(account_id, container_id) -> folders_list
-colnames(folders_list)[1] <- "folderId"
 
 # join folders with tags and variables --------------------------------------------------
 merge(tag_list, folders_list, by = "folderId", all.x = TRUE) -> tag_list
