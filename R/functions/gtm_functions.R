@@ -55,6 +55,9 @@ gtm_tag_list <- function(account_id, container_id){
   as.data.frame(tag_list$content) -> df_tags
   df_tags[c("tag.paused", "tag.notes")[!(c("tag.paused", "tag.notes") %in% colnames(df_tags))]] = FALSE
   df_tags[,c("tag.tagId", "tag.name", "tag.type", "tag.parentFolderId", "tag.paused", "tag.notes")] -> df_tags
+  colnames(df_tags)[c(4,5)] <- c("folderId", "tag.enabled")
+  df_tags$tag.enabled[is.na(df_tags$tag.enabled)] <- FALSE
+  df_tags
 }
 
 gtm_var_list <- function(account_id, container_id){
@@ -64,7 +67,9 @@ gtm_var_list <- function(account_id, container_id){
   f_var <- gar_api_generator(var_url, "GET")
   v_l <- f_var()
   as.data.frame(v_l$content) -> v_l
-  v_l[,c("variable.variableId", "variable.name", "variable.type", "variable.notes", "variable.parentFolderId")]
+  v_l[,c("variable.variableId", "variable.name", "variable.type", "variable.notes", "variable.parentFolderId")] -> v_l
+  colnames(v_l)[5] <- "folderId"
+  v_l
 }
 
 gtm_trigger_list <- function(account_id, container_id){
@@ -76,6 +81,8 @@ gtm_trigger_list <- function(account_id, container_id){
   as.data.frame(t$content) -> t
   t[c("trigger.parentFolderId", "trigger.notes")[!(c("trigger.parentFolderId", "trigger.notes") %in% colnames(t))]] = FALSE
   t[,c("trigger.triggerId", "trigger.name", "trigger.type", "trigger.parentFolderId","trigger.notes")] -> t
+  colnames(t)[4] <- "folderId"
+  t
 }
 
 gtm_user_list <- function(account_id){
@@ -100,4 +107,6 @@ gtm_folder_list <- function(account_id, container_id){
   f <- f_fol()
   as.data.frame(f$content) -> f
   f[,c("folder.folderId", "folder.name")]-> t
+  colnames(t)[1] <- "folderId"
+  t
 }
