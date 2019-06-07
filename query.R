@@ -2,7 +2,7 @@
 library(googleAuthR)
 library(openxlsx)
 source("R/functions/api_data.R")
-source("R/functions/gtm_api.R")
+source("R/functions/gtm_functions.R")
 
 # Basic input for project -------------------------------------------------
 projectName <- 'Dummy inc' #insert company name here for Excel output
