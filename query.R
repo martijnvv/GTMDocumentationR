@@ -15,10 +15,6 @@ googleAuthR::gar_auth()
 # Choose account_id -------------------------------------------------------
 account_id <- "INSERT_ACCOUNT_ID"
 
-# Run account_id specific queries -----------------------------------------
-gtm_container_list(account_id) -> container_list
-gtm_account_list() -> account_list
-
 # Choose container from container_list ------------------------------------
 container_id <- "INSERT_CONTAINER_ID"
 
