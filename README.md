@@ -40,7 +40,7 @@ With each item in GTM (variable, trigger, tag), you can add a note. This script 
 
 ## Example output
 I've added an example output file to see what this looks like.
-[Download the example here](https://github.com/martijnvv/GTMDocumentationR/blob/master/Dummy%20inc_gtmDocumentation_2020-01-20.xlsx)
+[Download the example here](https://github.com/martijnvv/GTMDocumentationR/blob/master/Dummy%20inc_gtmDocumentation_2020-01-20.xlsx?raw=true)
 
 ### Summary view
 ![fontpage - summary](https://martijnvanvreeden.nl/img/example_output.PNG)
