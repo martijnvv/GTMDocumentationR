@@ -37,3 +37,6 @@ Once you have access to GTM via your R script, please provide a valid Google Tag
 
 ### Split your variable notes input to multiple columns (optional)
 With each item in GTM (variable, trigger, tag), you can add a note. This script pulls the information from the note for each corresponding item and splits the texts to separate columns based on an identifier. It is possible to setup these identifiers to provide more detailed documentation for each of the items in the documentation.
+
+##Example output
+I've added an example output file to see what this looks like
