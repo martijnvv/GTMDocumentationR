@@ -12,45 +12,62 @@ gtm_container_list <- function(account_id){
   as.data.frame(c$content)
 }
 
+gtm_local_container_id <- function(container_id, account_id){
+  gtm_container_list(account_id) -> df
+  df$container.containerId[df$container.publicId == container_id]
+}
+
 gtm_environment_list <- function(account_id, container_id) {
+  gtm_container_list(account_id) -> df
+  df$container.containerId[df$container.publicId == container_id] -> c_id
   cont_url <- paste("https://www.googleapis.com/tagmanager/v2/accounts/",account_id,"/containers", sep = "")
-  env_url <- paste(cont_url,"/",container_id, "/environments", sep = "")
+  env_url <- paste(cont_url,"/",c_id, "/environments", sep = "")
   f_env <- gar_api_generator(env_url, "GET")
   env <- f_env()
   as.data.frame(env$content)
 }
 
 gtm_workspace_list <- function(account_id, container_id) {
+  gtm_container_list(account_id) -> df
+  df$container.containerId[df$container.publicId == container_id] -> c_id
   cont_url <- paste("https://www.googleapis.com/tagmanager/v2/accounts/",account_id,"/containers", sep = "")
-  env_url <- paste(cont_url,"/",container_id, "/workspaces", sep = "")
+  env_url <- paste(cont_url,"/",c_id, "/workspaces", sep = "")
   f_env <- gar_api_generator(env_url, "GET")
   env <- f_env()
   as.data.frame(env$content)
 }
 
 gtm_container_version <- function(account_id, container_id){
-  gtm_environment_list(account_id, container_id) -> ge
+  gtm_container_list(account_id) -> df
+  df$container.containerId[df$container.publicId == container_id] -> c_id
+  gtm_environment_list(account_id, c_id) -> ge
   max(as.numeric(ge$environment.containerVersionId), na.rm = TRUE)
 }
 
 gtm_workspace_id <- function(account_id, container_id){
-  gtm_workspace_list(account_id, container_id) -> ge
+  gtm_container_list(account_id) -> df
+  df$container.containerId[df$container.publicId == container_id] -> c_id
+  gtm_workspace_list(account_id, c_id) -> ge
   max(as.numeric(ge$workspace.workspaceId), na.rm = TRUE) #do we need a better way to find the correct workspace ID?
 }
 
 gtm_builtin_list <- function(account_id,container_id){
-  gtm_workspace_id(account_id,container_id) -> v
+  gtm_container_list(account_id) -> df
+  df$container.containerId[df$container.publicId == container_id] -> c_id
+  gtm_workspace_id(account_id,c_id) -> v
   cont_url <- paste("https://www.googleapis.com/tagmanager/v2/accounts/",account_id,"/containers", sep = "")
-  ver_url <- paste(cont_url,"/",container_id, "/workspaces/",v, "/built_in_variables", sep = "")
+  ver_url <- paste(cont_url,"/",c_id, "/workspaces/",v, "/built_in_variables", sep = "")
   f_ver <- gar_api_generator(ver_url, "GET")
   ver_list <- f_ver()
   ver_list$content$builtInVariable[,c("name", "type")]
 }
 
 gtm_tag_list <- function(account_id, container_id){
-  gtm_workspace_id(account_id, container_id) -> ws
+  gtm_container_list(account_id) -> df
+  df$container.containerId[df$container.publicId == container_id] -> c_id
+  gtm_workspace_id(account_id, c_id) -> ws
   cont_url <- paste("https://www.googleapis.com/tagmanager/v2/accounts/",account_id,"/containers", sep = "")
-  f_tag <- gar_api_generator(paste(cont_url,"/",container_id, "/workspaces/",  ws,"/tags/", sep = ""), "GET")
+  f_tag <- gar_api_generator(paste(cont_url,"/",c_id, "/workspaces/",  ws,"/tags/", sep = ""), "GET")
   tag_list <- f_tag()
   as.data.frame(tag_list$content) -> df_tags
   df_tags[c("tag.paused", "tag.notes")[!(c("tag.paused", "tag.notes") %in% colnames(df_tags))]] = FALSE
@@ -61,9 +78,11 @@ gtm_tag_list <- function(account_id, container_id){
 }
 
 gtm_var_list <- function(account_id, container_id){
-  gtm_workspace_id(account_id, container_id) -> ws
+  gtm_container_list(account_id) -> df
+  df$container.containerId[df$container.publicId == container_id] -> c_id
+  gtm_workspace_id(account_id, c_id) -> ws
   cont_url <- paste("https://www.googleapis.com/tagmanager/v2/accounts/",account_id,"/containers", sep = "")
-  var_url <- paste(cont_url,"/",container_id, "/workspaces/",  ws, "/variables", sep = "")
+  var_url <- paste(cont_url,"/",c_id, "/workspaces/",  ws, "/variables", sep = "")
   f_var <- gar_api_generator(var_url, "GET")
   v_l <- f_var()
   as.data.frame(v_l$content) -> v_l
@@ -73,9 +92,11 @@ gtm_var_list <- function(account_id, container_id){
 }
 
 gtm_trigger_list <- function(account_id, container_id){
-  gtm_workspace_id(account_id, container_id) -> ws
+  gtm_container_list(account_id) -> df
+  df$container.containerId[df$container.publicId == container_id] -> c_id
+  gtm_workspace_id(account_id, c_id) -> ws
   cont_url <- paste("https://www.googleapis.com/tagmanager/v2/accounts/",account_id,"/containers", sep = "")
-  tri_url <- paste(cont_url,"/",container_id, "/workspaces/",  ws, "/triggers", sep = "")
+  tri_url <- paste(cont_url,"/",c_id, "/workspaces/",  ws, "/triggers", sep = "")
   f_tri <- gar_api_generator(tri_url, "GET")
   t <- f_tri()
   as.data.frame(t$content) -> t
@@ -100,9 +121,11 @@ gtm_user_list <- function(account_id){
 }
 
 gtm_folder_list <- function(account_id, container_id){
-  gtm_workspace_id(account_id, container_id) -> ws
+  gtm_container_list(account_id) -> df
+  df$container.containerId[df$container.publicId == container_id] -> c_id
+  gtm_workspace_id(account_id, c_id) -> ws
   cont_url <- paste("https://www.googleapis.com/tagmanager/v2/accounts/",account_id,"/containers", sep = "") 
-  fol_url <- paste(cont_url,"/",container_id, "/workspaces/",  ws, "/folders", sep = "")
+  fol_url <- paste(cont_url,"/",c_id, "/workspaces/",  ws, "/folders", sep = "")
   f_fol <- gar_api_generator(fol_url, "GET")
   f <- f_fol()
   as.data.frame(f$content) -> f
