@@ -42,7 +42,7 @@ With each item in GTM (variable, trigger, tag), you can add a note. This script 
 I've added an example output file to see what this looks like
 
 ### Summary view
-![fontpage - summary](https://martijnvanvreeden.nl/img/example_output.webp)
+![fontpage - summary](https://martijnvanvreeden.nl/img/example_output.PNG)
 
 ### Variables tab
-![fontpage - summary](https://martijnvanvreeden.nl/img/example_output2.webp)
+![fontpage - summary](https://martijnvanvreeden.nl/img/example_output2.PNG)
