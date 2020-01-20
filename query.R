@@ -15,6 +15,9 @@ googleAuthR::gar_auth()
 # Choose account_id -------------------------------------------------------
 account_id <- "INSERT_ACCOUNT_ID"
 
+# Create container_list ------------------------------------
+gtm_container_list(account_id) -> container_list
+
 # Choose container from container_list ------------------------------------
 container_id <- "INSERT_CONTAINER_ID"
 
@@ -128,4 +131,4 @@ gtm_latest_publish <- as.character(as.Date(as.POSIXct(gtm_latest_publish/1000, o
   writeData(wb, "Summary", paste(NumberTriggers, " triggers in account", sep=""), startCol = 4, startRow = 12, keepNA = FALSE)
 
   #create the workbook
-  saveWorkbook(wb, file = paste0("output/reports/",xlsXFileName), overwrite = TRUE)
+  saveWorkbook(wb, file = xlsXFileName, overwrite = TRUE)
