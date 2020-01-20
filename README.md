@@ -39,7 +39,8 @@ Once you have access to GTM via your R script, please provide a valid Google Tag
 With each item in GTM (variable, trigger, tag), you can add a note. This script pulls the information from the note for each corresponding item and splits the texts to separate columns based on an identifier. It is possible to setup these identifiers to provide more detailed documentation for each of the items in the documentation.
 
 ## Example output
-I've added an example output file to see what this looks like
+I've added an example output file to see what this looks like.
+[Download the example here](https://github.com/martijnvv/GTMDocumentationR/blob/master/Dummy%20inc_gtmDocumentation_2020-01-20.xlsx)
 
 ### Summary view
 ![fontpage - summary](https://martijnvanvreeden.nl/img/example_output.PNG)
